@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { site, monthlyPrice, trialLabel } from "@/lib/site";
+import { site, monthlyPrice } from "@/lib/site";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { PageHero, Section } from "@/components/ui";
 import { AuditForm } from "@/components/audit-form";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Request a Venue Revenue Audit",
+  title: "Get a Free Venue Revenue Audit",
   description:
-    "Request a venue revenue audit from Per Cap Partners. We review 12 months of shows and show where per cap, costs and taxes can improve.",
+    "Get a free venue revenue audit from Per Cap Partners. We review 12 months of shows and show where per cap, costs and taxes can improve.",
   path: "/contact",
 });
 
@@ -15,10 +15,10 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
-        crumbs={[{ name: "Home", path: "/" }, { name: "Request an audit", path: "/contact" }]}
-        eyebrow="Request an audit"
-        title="Request a venue revenue audit"
-        answer={`Tell us about your venue and we'll book a 30-minute call. If it's a fit, your ${trialLabel().toLowerCase()}: we review your last 12 months of ticketing, bar and financial data and show you where per cap, costs and taxes can improve. Plans start at ${monthlyPrice()} only if you decide to continue.`}
+        crumbs={[{ name: "Home", path: "/" }, { name: "Free revenue audit", path: "/contact" }]}
+        eyebrow="Free revenue audit"
+        title="Get your free venue revenue audit"
+        answer={`Tell us about your venue and we'll book a 30-minute call. If it's a fit, we review your last 12 months of ticketing, bar and financial data for free and show you where per cap, costs and taxes can improve. Engagements start at ${monthlyPrice()} only if you decide to continue.`}
       />
       <Section>
         <div className="grid gap-12 lg:grid-cols-[2fr_1fr]">

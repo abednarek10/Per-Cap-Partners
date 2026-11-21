@@ -1,4 +1,4 @@
-import { site, absoluteUrl, monthlyPrice, trialLabel } from "@/lib/site";
+import { site, absoluteUrl, monthlyPrice, freeAudit } from "@/lib/site";
 import type { Faq, Service } from "@/content/services";
 import type { Term } from "@/content/glossary";
 import type { Article } from "@/content/insights";
@@ -33,33 +33,29 @@ export function organization(): Thing {
     ...(site.showPricing
       ? {
           priceRange: `From ${monthlyPrice()}`,
-          makesOffer: {
-            "@type": "Offer",
-            name: "Fractional CFO engagement for music venues",
-            description: `${trialLabel()}, then from ${monthlyPrice()}.`,
-            url: absoluteUrl("/pricing"),
-            priceCurrency: site.currency,
-            priceSpecification: [
-              {
+          makesOffer: [
+            {
+              "@type": "Offer",
+              name: freeAudit,
+              description: "Review of the last 12 months of ticketing, bar and financial data, showing where per cap, costs and taxes can improve.",
+              url: absoluteUrl("/contact"),
+              price: 0,
+              priceCurrency: site.currency,
+            },
+            {
+              "@type": "Offer",
+              name: "Fractional CFO engagement for music venues",
+              url: absoluteUrl("/pricing"),
+              priceCurrency: site.currency,
+              priceSpecification: {
                 "@type": "UnitPriceSpecification",
-                name: "Free trial",
-                price: 0,
-                priceCurrency: site.currency,
-                unitCode: "MON",
-                billingDuration: site.freeTrialMonths,
-                priceComponentType: "https://schema.org/Subscription",
-              },
-              {
-                "@type": "UnitPriceSpecification",
-                name: "Monthly plan",
                 minPrice: site.monthlyFeeFrom,
                 price: site.monthlyFeeFrom,
                 priceCurrency: site.currency,
                 unitCode: "MON",
-                billingIncrement: 1,
               },
-            ],
-          },
+            },
+          ],
         }
       : {}),
   };

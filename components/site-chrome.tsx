@@ -43,9 +43,9 @@ export function SiteHeader() {
           ))}
         </nav>
         <div className="hidden lg:block">
-          <ButtonLink href="/contact" className="!px-5 !py-2 text-sm">Start free month</ButtonLink>
+          <ButtonLink href="/contact" className="!px-5 !py-2 text-sm">Free revenue audit</ButtonLink>
         </div>
-        <MobileNav links={[...navLinks, { href: "/contact", label: "Start your free month" }]} />
+        <MobileNav links={[...navLinks, { href: "/contact", label: "Get your free revenue audit" }]} />
       </Container>
     </header>
   );

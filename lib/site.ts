@@ -15,7 +15,6 @@ export const site = {
 
   // Engagement model
   monthlyFeeFrom: 849.99,
-  freeTrialMonths: 1,
   currency: "USD",
   showPricing: true,
 
@@ -40,5 +39,5 @@ export const formatUsd = (n: number) =>
 
 /** "$849.99/mo" */
 export const monthlyPrice = () => `${formatUsd(site.monthlyFeeFrom)}/mo`;
-/** "First month free" (pluralizes if the trial changes) */
-export const trialLabel = () => (site.freeTrialMonths === 1 ? "First month free" : `First ${site.freeTrialMonths} months free`);
+/** The no-cost entry offer every CTA points to. */
+export const freeAudit = "Free Venue Revenue Audit";

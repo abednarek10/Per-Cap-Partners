@@ -1,4 +1,4 @@
-import { site, monthlyPrice, trialLabel } from "@/lib/site";
+import { site, monthlyPrice } from "@/lib/site";
 import type { Faq } from "./services";
 
 export const generalFaqs: Faq[] = [
@@ -8,7 +8,7 @@ export const generalFaqs: Faq[] = [
   },
   {
     q: "How much does Per Cap Partners cost?",
-    a: `Plans start at ${monthlyPrice()}, and your ${trialLabel().toLowerCase()}: we onboard your data and deliver a certified baseline revenue audit before you pay anything. Pricing is reassessed each year against the performance metrics we agree on at kickoff, so what we charge stays tied to the value we create.`,
+    a: `It starts with a free revenue audit of your last 12 months of shows, so you see the opportunity before you commit. Engagements start at ${monthlyPrice()}. Pricing is reassessed each year against the performance metrics we agree on at kickoff, so what we charge stays tied to the value we create.`,
   },
   {
     q: "Who will we actually work with?",

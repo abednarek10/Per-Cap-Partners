@@ -100,3 +100,18 @@ test("no public surface reveals internal engagement details", async ({ page, req
   }
   for (const p of ["/llms.txt", "/llms-full.txt"]) expect(await (await request.get(p)).text(), p).not.toMatch(leak);
 });
+
+test("home security cards keep their own titles", async ({ page }) => {
+  await page.goto("/");
+  const security = page.locator('section[aria-labelledby="security-heading"]');
+  for (const t of ["Fan PII tokenized", "Encrypted everywhere", "Isolated per venue", "Raw files deleted"]) {
+    await expect(security.getByRole("heading", { name: t })).toBeVisible();
+  }
+});
+
+test("free revenue audit is the primary offer", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("link", { name: "Get your free revenue audit" }).first()).toHaveAttribute("href", "/contact");
+  await page.goto("/pricing");
+  await expect(page.locator("h1")).toContainText("Free audit first");
+});

@@ -35,7 +35,7 @@ test.describe.configure({ mode: "serial" });
 test("valid submission is stored and confirmed", async ({ page }) => {
   await page.goto("/contact");
   const v = await fill(page);
-  await page.getByRole("button", { name: "Start my free month" }).click();
+  await page.getByRole("button", { name: "Get my free revenue audit" }).click();
   await expect(page.getByRole("status")).toContainText("Thanks");
   const leads = await readLeads();
   const saved = leads.find((l) => l.email === v.email);
@@ -47,7 +47,7 @@ test("valid submission is stored and confirmed", async ({ page }) => {
 test("invalid submission shows field errors and keeps entered values", async ({ page }) => {
   await page.goto("/contact");
   await fill(page, { email: "not-an-email" });
-  await page.getByRole("button", { name: "Start my free month" }).click();
+  await page.getByRole("button", { name: "Get my free revenue audit" }).click();
   await expect(page.locator("#form-error")).toContainText("fix the highlighted fields");
   await expect(page.getByText("Please enter a valid email address.")).toBeVisible();
   await expect(page.getByLabel("Work email")).toHaveAttribute("aria-invalid", "true");
@@ -59,7 +59,7 @@ test("honeypot submission looks successful but is not stored", async ({ page }) 
   await page.goto("/contact");
   const v = await fill(page);
   await page.locator("#website").evaluate((el: HTMLInputElement) => (el.value = "http://spam.example"));
-  await page.getByRole("button", { name: "Start my free month" }).click();
+  await page.getByRole("button", { name: "Get my free revenue audit" }).click();
   await expect(page.getByRole("status")).toContainText("Thanks");
   expect((await readLeads()).some((l) => l.email === v.email)).toBe(false);
 });

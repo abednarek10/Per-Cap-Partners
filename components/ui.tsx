@@ -114,10 +114,10 @@ export function CtaBand({ title = "See what your room is leaving on the table", 
         <div className="max-w-2xl">
           <h2 className="text-3xl font-bold sm:text-4xl">{title}</h2>
           <p className="mt-3 text-muted">
-            {body ?? "Your first month is free. We'll review your last 12 months of shows and show you where per cap, costs and taxes can improve, before you pay anything."}
+            {body ?? "Get a free Venue Revenue Audit. We'll review your last 12 months of shows and show you where per cap, costs and taxes can improve, before you commit to anything."}
           </p>
         </div>
-        <ButtonLink href="/contact" className="shrink-0">Start your free month</ButtonLink>
+        <ButtonLink href="/contact" className="shrink-0">Get your free revenue audit</ButtonLink>
       </Container>
     </section>
   );

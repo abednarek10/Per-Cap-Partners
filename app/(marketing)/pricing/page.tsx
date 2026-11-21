@@ -1,24 +1,23 @@
 import type { Metadata } from "next";
-import { site, monthlyPrice, trialLabel } from "@/lib/site";
+import { site, monthlyPrice } from "@/lib/site";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { graph, faqPage } from "@/lib/seo/jsonld";
 import { Section, JsonLd, PageHero, CtaBand, FaqList, ButtonLink } from "@/components/ui";
 import type { Faq } from "@/content/services";
 
 const price = monthlyPrice();
-const trial = trialLabel();
 
 export const metadata: Metadata = pageMetadata({
   title: "Fractional CFO Pricing for Music Venues",
   description: site.showPricing
-    ? `Fractional CFO for music venues from ${price}. ${trial}: we onboard your data and deliver your baseline revenue audit before you pay anything.`
+    ? `Fractional CFO for music venues from ${price}. Start with a free revenue audit of your last 12 months of shows before you commit to anything.`
     : `How Per Cap Partners prices fractional CFO services for music venues, reassessed against agreed performance metrics.`,
   path: "/pricing",
 });
 
 const pricingFaqs: Faq[] = [
   { q: "What does 'reassessed on performance' mean?", a: "At kickoff we agree on a short list of metrics, such as per cap, labor cost per head and recovered settlement costs. Each year we review results against them together and reset pricing and scope. If the work isn't creating value, you'll see it in the numbers." },
-  { q: "How does the free month work?", a: `Your first ${site.freeTrialMonths === 1 ? "month is" : `${site.freeTrialMonths} months are`} free. In that time we onboard your ticketing, bar and financial data and deliver your baseline: per cap by show type, cost per head and a settlement review, all certified before you see it. You decide whether to continue once you've seen the findings.` },
+  { q: "What's in the free revenue audit?", a: "We review your last 12 months of ticketing, bar and financial data and show you where per cap, costs and taxes can improve: per cap by show type, cost per head and a settlement review, certified before you see it. It costs nothing, and you decide whether to start an engagement once you've seen the findings." },
   { q: "What's not included?", a: "Bookkeeping, payroll processing and tax filing stay with your existing bookkeeper and CPA. We work alongside them and give them better inputs." },
 ];
 
@@ -31,10 +30,10 @@ export default function PricingPage() {
       <PageHero
         crumbs={[{ name: "Home", path: "/" }, { name: "Pricing", path: "/pricing" }]}
         eyebrow="Pricing"
-        title={site.showPricing ? `${trial}. Then from ${price}.` : "One engagement. Every lever covered."}
+        title={site.showPricing ? `Free audit first. Then from ${price}.` : "Free audit first. Every lever covered."}
         answer={
           site.showPricing
-            ? `${site.name} plans start at ${price}, covering all four service areas, and your ${trial.toLowerCase()}. During the free month we onboard your data and deliver a certified baseline revenue audit. Pricing is reassessed each year against performance metrics agreed at kickoff.`
+            ? `Every ${site.name} engagement starts with a free revenue audit of your last 12 months of shows, so you see the opportunity before you commit. Plans start at ${price}, cover all four service areas, and pricing is reassessed each year against performance metrics agreed at kickoff.`
             : `${site.name} engagements are a single fee covering all four service areas, reassessed each year against agreed performance metrics.`
         }
       />
@@ -49,12 +48,12 @@ export default function PricingPage() {
                   <span className="font-display text-6xl font-bold text-accent-ink">{formatAmount()}</span>
                   <span className="text-muted"> / mo</span>
                 </p>
-                <p className="mt-3 inline-block rounded-full bg-accent px-4 py-1.5 text-sm font-semibold text-on-accent">{trial}</p>
+                <p className="mt-3 inline-block rounded-full bg-accent px-4 py-1.5 text-sm font-semibold text-on-accent">Starts with a free revenue audit</p>
               </>
             )}
             <ul className="mt-8 space-y-3">
               {[
-                "Free first month: onboarding + certified baseline audit",
+                "Free revenue audit before you commit",
                 "Revenue, cost, tax-efficiency and GTM analysis",
                 "Every finding reviewed and certified by a person",
                 "Monthly KPI pack and 13-week cash-flow forecast",
@@ -66,7 +65,7 @@ export default function PricingPage() {
                 <li key={i} className="flex gap-3"><span aria-hidden className="text-accent-ink">✓</span>{i}</li>
               ))}
             </ul>
-            <ButtonLink href="/contact" className="mt-10">Start your free month</ButtonLink>
+            <ButtonLink href="/contact" className="mt-10">Get your free revenue audit</ButtonLink>
           </div>
           <div className="space-y-5">
             <div className="rounded-2xl border border-line bg-surface p-6">

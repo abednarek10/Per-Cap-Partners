@@ -57,7 +57,7 @@ export function AuditForm() {
         disabled={pending}
         className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-accent px-6 py-3.5 text-base font-semibold text-on-accent hover:brightness-110 disabled:opacity-60 sm:w-auto"
       >
-        {pending ? "Sending…" : "Start my free month"}
+        {pending ? "Sending…" : "Get my free revenue audit"}
       </button>
       <p className="mt-4 text-xs text-muted">We'll only use these details to reply to your request. No marketing lists.</p>
     </form>

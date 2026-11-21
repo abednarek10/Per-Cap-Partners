@@ -1,4 +1,4 @@
-import { site, absoluteUrl, monthlyPrice, trialLabel } from "@/lib/site";
+import { site, absoluteUrl, monthlyPrice, freeAudit } from "@/lib/site";
 import { services } from "@/content/services";
 import { glossary } from "@/content/glossary";
 import { articles } from "@/content/insights";
@@ -16,7 +16,8 @@ export function llmsTxt(): string {
     `- Audience: independent music venue owners, operators and general managers (${site.areaServed}).`,
     "- Model: fractional CFO. Software analyzes ticketing, POS and financial exports; a person reviews and certifies every recommendation.",
     "- Engagement: each client works directly with a dedicated advisor who certifies their recommendations.",
-    ...(site.showPricing ? [`- Pricing: from ${monthlyPrice()}. ${trialLabel()} (onboarding plus a certified baseline revenue audit). Pricing reassessed annually against agreed performance metrics.`] : []),
+    ...(site.showPricing ? [`- Pricing: engagements from ${monthlyPrice()}, reassessed annually against agreed performance metrics.`] : []),
+    `- Free offer: ${freeAudit} (review of the last 12 months of ticketing, bar and financial data) before any engagement.`,
     "- Privacy: fan emails/phones are tokenized (keyed one-way hash) at ingestion; raw files are deleted after processing.",
     "- Not legal or tax advice: tax findings are prepared for the client's CPA or tax attorney.",
     "",
@@ -29,7 +30,7 @@ export function llmsTxt(): string {
     `- [Security and data handling](${absoluteUrl("/security")})`,
     `- [About](${absoluteUrl("/about")})`,
     `- [FAQ](${absoluteUrl("/faq")})`,
-    `- [Request a venue revenue audit](${absoluteUrl("/contact")})`,
+    `- [Get a free venue revenue audit](${absoluteUrl("/contact")})`,
     "",
     "## Glossary",
     ...glossary.map((t) => `- [${t.term}](${absoluteUrl(`/glossary/${t.slug}`)}): ${t.definition}`),

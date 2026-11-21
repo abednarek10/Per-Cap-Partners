@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { site, formatUsd, monthlyPrice, trialLabel } from "@/lib/site";
+import { site, formatUsd, monthlyPrice } from "@/lib/site";
 import { services } from "@/content/services";
 import { generalFaqs } from "@/content/faq";
 import { pageMetadata } from "@/lib/seo/metadata";
@@ -11,7 +11,7 @@ import { steps } from "@/content/process";
 export const metadata: Metadata = pageMetadata({
   title: `Fractional CFO for Music Venues | ${site.name}`,
   description:
-    "Fractional CFO for independent music venues. Raise per cap, cut costs and improve tax efficiency with human-certified recommendations. First month free.",
+    "Fractional CFO for independent music venues. Raise per cap, cut costs and improve tax efficiency with human-certified recommendations. Start with a free revenue audit.",
   path: "/",
 });
 
@@ -38,15 +38,15 @@ export default function HomePage() {
             efficiency, so owners and GMs can get back to booking and servicing talent.
           </p>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="/contact">Start your free month</ButtonLink>
+            <ButtonLink href="/contact">Get your free revenue audit</ButtonLink>
             <ButtonLink href="/how-it-works" variant="ghost">See how it works</ButtonLink>
           </div>
           <ul className="mt-12 grid max-w-3xl grid-cols-2 gap-x-6 gap-y-4 text-sm text-muted sm:grid-cols-4">
             {[
               "Human-certified findings",
               "Dedicated advisor",
-              site.showPricing ? `From ${monthlyPrice()}` : trialLabel(),
-              site.showPricing ? trialLabel() : "Fan PII tokenized",
+              "Free revenue audit",
+              site.showPricing ? `From ${monthlyPrice()}` : "Fan PII tokenized",
             ].map((t) => (
               <li key={t} className="flex items-center gap-2">
                 <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent" />
@@ -170,10 +170,10 @@ export default function HomePage() {
               You work directly with the advisor who reviews and signs off on your numbers, someone who knows your calendar,
               your team and how your room runs on a sold-out Saturday.
               {site.showPricing &&
-                ` Plans start at ${monthlyPrice()} with your ${trialLabel().toLowerCase()}, and pricing is reassessed each year against the performance metrics we agree on together.`}
+                ` It starts with a free revenue audit. Plans start at ${monthlyPrice()}, and pricing is reassessed each year against the performance metrics we agree on together.`}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <ButtonLink href="/contact">Start your free month</ButtonLink>
+              <ButtonLink href="/contact">Get your free revenue audit</ButtonLink>
               <ButtonLink href="/pricing" variant="ghost">How pricing works</ButtonLink>
             </div>
           </div>
@@ -188,7 +188,7 @@ export default function HomePage() {
         </div>
         <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { t: site.showPricing ? trialLabel() : "Fan PII tokenized", b: "Emails and phones become one-way tokens before storage. Names are dropped." },
+            { t: "Fan PII tokenized", b: "Emails and phones become one-way tokens before storage. Names are dropped." },
             { t: "Encrypted everywhere", b: "TLS in transit, encryption at rest, private storage only." },
             { t: "Isolated per venue", b: "Row-level security means no client can see another's data." },
             { t: "Raw files deleted", b: "Uploaded exports are removed after processing." },
