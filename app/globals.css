@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+/* Brand tokens. Dark ("stage") is the default; light ("house lights up")
+   follows the visitor's OS preference. Text/background pairs meet WCAG AA. */
+:root {
+  --bg: #0b0b0f;
+  --surface: #14141b;
+  --surface-2: #1d1d27;
+  --border: #2b2b38;
+  --text: #f4f1ea;
+  --muted: #b0ada6;
+  --accent: #f5a524;
+  --accent-text: #f5a524;
+  --on-accent: #0b0b0f;
+  --glow: rgba(245, 165, 36, 0.18);
+  --danger: #f87171;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #faf8f3;
+    --surface: #ffffff;
+    --surface-2: #f2eee5;
+    --border: #e0d9cb;
+    --text: #16151b;
+    --muted: #54524c;
+    --accent: #f5a524;
+    --accent-text: #8a4b00;
+    --on-accent: #16151b;
+    --glow: rgba(245, 165, 36, 0.22);
+    --danger: #b91c1c;
+    color-scheme: light;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--border);
+  --color-ink: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-text);
+  --color-on-accent: var(--on-accent);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-archivo), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-stretch: 85%;
+    letter-spacing: -0.015em;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  a { text-underline-offset: 3px; }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  ::selection { background: var(--accent); color: var(--on-accent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* Spotlight wash used behind hero sections. */
+.spotlight {
+  background:
+    radial-gradient(60% 55% at 50% -10%, var(--glow), transparent 70%),
+    var(--bg);
+}
+
+.prose-venue p { margin-top: 1rem; line-height: 1.7; color: var(--muted); }
+.prose-venue ul { margin-top: 1rem; padding-left: 1.25rem; list-style: disc; color: var(--muted); }
+.prose-venue li { margin-top: 0.4rem; line-height: 1.6; }
+.prose-venue h2 { margin-top: 2.5rem; font-size: 1.75rem; }
+
+details > summary { list-style: none; cursor: pointer; }
+details > summary::-webkit-details-marker { display: none; }
