@@ -3,15 +3,12 @@ import { site, primaryCta, primaryCtaShort, founderDisplayName } from "@/lib/sit
 import { services } from "@/content/services";
 import { Container, ButtonLink } from "./ui";
 import { MobileNav } from "./mobile-nav";
+import { Monogram } from "./monogram";
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <Link href="/" className={`flex items-center gap-2.5 ${className}`} aria-label={`${site.name}, home`}>
-      <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden>
-        <path d="M16 2 L5 28 H27 Z" fill="var(--accent)" opacity="0.22" />
-        <circle cx="16" cy="21" r="6.5" fill="var(--accent)" />
-        <circle cx="16" cy="3.5" r="2.5" fill="var(--accent)" />
-      </svg>
+      <Monogram className="h-10 w-auto shrink-0 rounded-[4px]" pad={80} />
       <span className="font-display text-lg font-bold uppercase tracking-wide [font-stretch:80%]">
         Per Cap <span className="text-muted">Partners</span>
       </span>

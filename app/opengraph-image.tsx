@@ -1,5 +1,8 @@
 import { ImageResponse } from "next/og";
 import { site } from "@/lib/site";
+import { monogramSvgString } from "@/components/monogram";
+
+const mark = `data:image/svg+xml;base64,${Buffer.from(monogramSvgString({ pad: 90, radius: 120 })).toString("base64")}`;
 
 export const alt = `${site.name}: ${site.tagline}`;
 export const size = { width: 1200, height: 630 };
@@ -21,15 +24,16 @@ export default function OgImage() {
           fontFamily: "sans-serif",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 16, fontSize: 30, fontWeight: 700, letterSpacing: 2 }}>
-          <div style={{ width: 34, height: 34, borderRadius: 999, background: "#f5a524" }} />
+        <div style={{ display: "flex", alignItems: "center", gap: 20, fontSize: 30, fontWeight: 700, letterSpacing: 2 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={mark} width={64} height={64} alt="" />
           PER CAP PARTNERS
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontSize: 84, fontWeight: 800, lineHeight: 1.02, color: "#f5a524" }}>You book the talent.</div>
-          <div style={{ fontSize: 84, fontWeight: 800, lineHeight: 1.02 }}>We run the numbers.</div>
+          <div style={{ fontSize: 84, fontWeight: 800, lineHeight: 1.02 }}>Know which shows</div>
+          <div style={{ fontSize: 84, fontWeight: 800, lineHeight: 1.02, color: "#f5a524" }}>actually make money.</div>
         </div>
-        <div style={{ fontSize: 30, color: "#b0ada6" }}>Fractional CFO and fan intelligence for independent music venues</div>
+        <div style={{ fontSize: 30, color: "#b0ada6" }}>Show-level profitability for independent venue groups</div>
       </div>
     ),
     size,
