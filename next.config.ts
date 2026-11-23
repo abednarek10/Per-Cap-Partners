@@ -13,6 +13,16 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  async redirects() {
+    return [
+      { source: "/about", destination: "/team", permanent: true },
+      { source: "/contact", destination: "/snapshot", permanent: true },
+      { source: "/services/revenue", destination: "/show-profitability", permanent: true },
+      { source: "/services/cost-reduction", destination: "/show-profitability", permanent: true },
+      { source: "/services/tax-efficiency", destination: "/services/fractional-cfo", permanent: true },
+      { source: "/services/gtm-strategy", destination: "/services/fractional-cfo", permanent: true },
+    ];
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

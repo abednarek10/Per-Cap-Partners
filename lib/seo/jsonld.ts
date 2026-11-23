@@ -1,12 +1,14 @@
-import { site, absoluteUrl, monthlyPrice, freeAudit } from "@/lib/site";
+import { site, absoluteUrl } from "@/lib/site";
+import { offers, priceLabel, getOffer } from "@/content/offers";
 import type { Faq, Service } from "@/content/services";
 import type { Term } from "@/content/glossary";
 import type { Article } from "@/content/insights";
+import type { PlaybookEntry } from "@/content/playbook";
 
 type Thing = Record<string, unknown>;
 
 const ORG_ID = absoluteUrl("/#organization");
-const PERSON_ID = absoluteUrl("/about#founder");
+const PERSON_ID = absoluteUrl("/team#founder");
 
 export function organization(): Thing {
   return {
@@ -20,56 +22,79 @@ export function organization(): Thing {
     email: site.email,
     areaServed: { "@type": "Country", name: site.areaServed },
     knowsAbout: [
-      "Fractional CFO services",
+      "Show-level profitability for live music venues",
+      "Fractional CFO services for venue groups",
+      "Artist deal settlements",
+      "13-week cash flow forecasting",
       "Music venue finance",
       "Per cap spending",
-      "Ticket pricing",
-      "Show settlements",
-      "Venue cost reduction",
-      "Fan data analytics",
+      "Booking offer guardrails",
+      "Venue lender and covenant reporting",
+      "Quality of earnings for venue transactions",
     ],
-    audience: { "@type": "BusinessAudience", audienceType: "Music venue owners, operators and general managers" },
+    audience: { "@type": "BusinessAudience", audienceType: site.audience },
     founder: { "@id": PERSON_ID },
     ...(site.showPricing
       ? {
-          priceRange: `From ${monthlyPrice()}`,
-          makesOffer: [
-            {
-              "@type": "Offer",
-              name: freeAudit,
-              description: "Review of the last 12 months of ticketing, bar and financial data, showing where per cap, costs and taxes can improve.",
-              url: absoluteUrl("/contact"),
-              price: 0,
-              priceCurrency: site.currency,
-            },
-            {
-              "@type": "Offer",
-              name: "Fractional CFO engagement for music venues",
-              url: absoluteUrl("/pricing"),
-              priceCurrency: site.currency,
-              priceSpecification: {
-                "@type": "UnitPriceSpecification",
-                minPrice: site.monthlyFeeFrom,
-                price: site.monthlyFeeFrom,
-                priceCurrency: site.currency,
-                unitCode: "MON",
-              },
-            },
-          ],
+          makesOffer: offers.map((o) => ({
+            "@type": "Offer",
+            name: o.name,
+            description: o.summary,
+            url: absoluteUrl(o.href),
+            ...(o.price.type === "free"
+              ? { price: 0, priceCurrency: site.currency }
+              : o.price.type === "from"
+                ? {
+                    priceSpecification: {
+                      "@type": "UnitPriceSpecification",
+                      minPrice: o.price.amount,
+                      priceCurrency: site.currency,
+                      ...(o.price.unit === "month" ? { unitCode: "MON" } : {}),
+                    },
+                  }
+                : {}),
+          })),
         }
       : {}),
   };
 }
 
 export function founder(): Thing {
+  const f = site.founder;
   return {
     "@type": "Person",
     "@id": PERSON_ID,
-    name: site.founder.name,
-    jobTitle: site.founder.jobTitle,
+    name: f.name,
+    honorificSuffix: f.credentials,
+    jobTitle: f.jobTitle,
     worksFor: { "@id": ORG_ID },
-    description: site.founder.bio,
-    ...(site.founder.sameAs.length ? { sameAs: site.founder.sameAs } : {}),
+    description: f.bio,
+    url: absoluteUrl("/team"),
+    ...(f.headshot ? { image: absoluteUrl(f.headshot) } : {}),
+    hasCredential: {
+      "@type": "EducationalOccupationalCredential",
+      credentialCategory: "Professional license",
+      name: "Certified Public Accountant (CPA)",
+      ...(f.licenseState ? { recognizedBy: { "@type": "Organization", name: `${f.licenseState} Board of Accountancy` } } : {}),
+    },
+    knowsAbout: ["Accounting", "Financial planning and analysis", "Music venue finance", "Revenue per attendee", "Tax efficiency"],
+    ...(f.linkedin ? { sameAs: [f.linkedin] } : {}),
+  };
+}
+
+/** The Per Cap platform as a software product (helps AI engines classify it). */
+export function softwareApplication(): Thing {
+  return {
+    "@type": "SoftwareApplication",
+    "@id": absoluteUrl("/product#app"),
+    name: site.productName,
+    applicationCategory: "BusinessApplication",
+    applicationSubCategory: "Show-level profitability for venue groups",
+    operatingSystem: "Web",
+    url: absoluteUrl("/product"),
+    description: site.positioning,
+    publisher: { "@id": ORG_ID },
+    audience: { "@type": "BusinessAudience", audienceType: site.audience },
   };
 }
 
@@ -87,7 +112,8 @@ export function service(s: Service): Thing {
     url: absoluteUrl(`/services/${s.slug}`),
     provider: { "@id": ORG_ID },
     areaServed: { "@type": "Country", name: site.areaServed },
-    audience: { "@type": "BusinessAudience", audienceType: "Independent music venues" },
+    audience: { "@type": "BusinessAudience", audienceType: s.whoFor },
+    ...(site.showPricing ? { offers: { "@type": "Offer", name: getOffer(s.offerId).name, description: priceLabel(getOffer(s.offerId).price), url: absoluteUrl(getOffer(s.offerId).href) } } : {}),
   };
 }
 
@@ -121,6 +147,26 @@ export function article(a: Article): Thing {
     author: { "@id": PERSON_ID },
     publisher: { "@id": ORG_ID },
     image: absoluteUrl("/opengraph-image"),
+  };
+}
+
+/** Playbook entry. `reviewedBy` and `lastReviewed` appear only once a CPA has certified it. */
+export function playbookArticle(e: PlaybookEntry): Thing {
+  return {
+    "@type": "Article",
+    "@id": absoluteUrl(`/playbook/${e.slug}#article`),
+    headline: e.title,
+    description: e.description,
+    abstract: e.answer,
+    articleSection: e.category,
+    audience: { "@type": "BusinessAudience", audienceType: e.whoFor },
+    url: absoluteUrl(`/playbook/${e.slug}`),
+    mainEntityOfPage: absoluteUrl(`/playbook/${e.slug}`),
+    datePublished: e.drafted,
+    dateModified: e.certified?.date ?? e.drafted,
+    publisher: { "@id": ORG_ID },
+    isPartOf: { "@type": "CollectionPage", name: `${site.name} Operator Playbook`, url: absoluteUrl("/playbook") },
+    ...(e.certified ? { author: { "@id": PERSON_ID }, reviewedBy: { "@id": PERSON_ID }, lastReviewed: e.certified.date } : { author: { "@id": ORG_ID } }),
   };
 }
 

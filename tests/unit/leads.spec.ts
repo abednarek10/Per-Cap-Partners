@@ -5,11 +5,12 @@ import { createRateLimiter } from "@/lib/leads/rate-limit";
 const valid = {
   name: "Jamie Rivera",
   email: "  Jamie@Example.COM ",
-  role: "General Manager",
-  venueName: "The Velvet Room",
-  city: "Austin",
-  capacity: "300–750",
-  showsPerYear: "150–250",
+  role: "Finance lead",
+  company: "Riverside Venue Group",
+  city: "Milwaukee",
+  rooms: "3–5 rooms",
+  interest: "Free snapshot",
+  systems: "Prism.fm, Toast",
   message: "",
   website: "",
 };
@@ -28,8 +29,8 @@ test.describe("lead schema", () => {
   });
 
   test("rejects values outside the allowed options", () => {
-    expect(leadSchema.safeParse({ ...valid, capacity: "huge" }).success).toBe(false);
-    expect(leadSchema.safeParse({ ...valid, showsPerYear: "1000" }).success).toBe(false);
+    expect(leadSchema.safeParse({ ...valid, rooms: "huge" }).success).toBe(false);
+    expect(leadSchema.safeParse({ ...valid, interest: "Something else" }).success).toBe(false);
   });
 
   test("rejects a filled honeypot", () => {

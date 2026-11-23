@@ -1,14 +1,15 @@
 "use server";
 
 import { headers } from "next/headers";
-import { parseLead, type LeadFormState, type LeadInput } from "@/lib/leads/schema";
+import { parseLead, leadFields, type LeadFormState, type LeadInput } from "@/lib/leads/schema";
 import { createRateLimiter } from "@/lib/leads/rate-limit";
 import { saveLead, hashIp } from "@/lib/leads/store";
 import { site } from "@/lib/site";
 
+// Per-instance limit; Step 2 moves this to the database-backed limiter.
 const limiter = createRateLimiter({ limit: 5, windowMs: 10 * 60 * 1000 });
 
-export async function submitLead(_prev: LeadFormState, formData: FormData): Promise<LeadFormState> {
+export async function submitRequest(_prev: LeadFormState, formData: FormData): Promise<LeadFormState> {
   const h = await headers();
   const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim() || h.get("x-real-ip") || "unknown";
   const ipHash = hashIp(ip);
@@ -19,18 +20,17 @@ export async function submitLead(_prev: LeadFormState, formData: FormData): Prom
 
   const parsed = parseLead(formData);
   if (!parsed.success) {
-    // Honeypot tripped: pretend success so bots learn nothing.
+    // Honeypot tripped: report success so bots learn nothing.
     if (parsed.error.issues.some((i) => i.path[0] === "website")) return { status: "success" };
-
     const fieldErrors: Partial<Record<keyof LeadInput, string>> = {};
     for (const issue of parsed.error.issues) {
       const key = issue.path[0] as keyof LeadInput | undefined;
       if (key && !fieldErrors[key]) fieldErrors[key] = issue.message;
     }
     const values: Partial<Record<keyof LeadInput, string>> = {};
-    for (const k of ["name", "email", "role", "venueName", "city", "capacity", "showsPerYear", "message"] as const) {
-      const val = formData.get(k);
-      if (typeof val === "string") values[k] = val.slice(0, 2000);
+    for (const k of leadFields) {
+      const v = formData.get(k);
+      if (typeof v === "string") values[k] = v.slice(0, 2000);
     }
     return { status: "error", message: "Please fix the highlighted fields.", fieldErrors, values };
   }
@@ -39,8 +39,8 @@ export async function submitLead(_prev: LeadFormState, formData: FormData): Prom
   try {
     await saveLead(lead, ipHash);
   } catch (err) {
-    console.error("[lead] failed to save", err instanceof Error ? err.message : err);
-    return { status: "error", message: `Something went wrong on our side. Please email us at ${site.email}.` };
+    console.error("[request] failed to save", err instanceof Error ? err.message : err);
+    return { status: "error", message: `Something went wrong on our side. Please email ${site.email}.` };
   }
   return { status: "success" };
 }

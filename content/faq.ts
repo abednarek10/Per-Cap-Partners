@@ -1,37 +1,42 @@
-import { site, monthlyPrice } from "@/lib/site";
+import { site, founderDisplayName } from "@/lib/site";
+import { getOffer, priceLabel } from "./offers";
 import type { Faq } from "./services";
 
 export const generalFaqs: Faq[] = [
   {
-    q: "What is a fractional CFO for a music venue?",
-    a: `A fractional CFO is a senior finance lead you share rather than hire full-time. For a venue, that means someone who owns the numbers behind every show: per cap, settlements, labor, cash flow, tax planning and reporting to ownership. ${site.name} provides that role as an ongoing engagement, so owners and GMs can focus on booking and servicing talent.`,
+    q: "What does Per Cap Partners do?",
+    a: `${site.name} shows independent venue groups which shows make money once the bar, labor and security are counted. We join settlement, POS and payroll data for every show, then deliver CPA-certified profitability analysis, cash forecasts built around deposits and guarantees, booking-offer guardrails, and lender reporting.`,
   },
   {
-    q: "How much does Per Cap Partners cost?",
-    a: `It starts with a free revenue audit of your last 12 months of shows, so you see the opportunity before you commit. Engagements start at ${monthlyPrice()}. Pricing is reassessed each year against the performance metrics we agree on at kickoff, so what we charge stays tied to the value we create.`,
+    q: "Who is Per Cap built for?",
+    a: "Independent operator groups running 2 to 10 rooms that book their own shows and have CFO-sized questions, like cash tied up in deposits, lender covenants, insurance renewals and expansion, but can't justify a full-time CFO.",
   },
   {
-    q: "Who will we actually work with?",
-    a: "The same advisor who reviews and certifies your recommendations. You get one point of contact who knows your room, your calendar and your team, not a rotating cast of analysts.",
+    q: "How much does it cost?",
+    a: `The show profitability snapshot is free. The Show Profitability Audit is a fixed fee, ${priceLabel(getOffer("audit").price).toLowerCase()}. Fractional CFO is ${priceLabel(getOffer("cfo").price).toLowerCase()}. Transaction support is priced per deal.`,
   },
   {
-    q: "What data do you need from us?",
-    a: "Standard exports you already have: ticketing order reports (Ticketmaster, AXS, Eventbrite, DICE, Etix and others), point-of-sale and bar sales (Square, Toast, Clover), show settlements, and your P&L or general ledger. Tax returns and depreciation schedules help with tax-efficiency work. Everything is uploaded through an encrypted client portal.",
+    q: "What is show-level profitability?",
+    a: "It's what one show earns the venue after every cost that show caused: the venue's share of ticket revenue after the artist settlement, plus bar net of pour cost and other show income, minus that night's labor, security and production.",
   },
   {
-    q: "Is our fans' personal data safe?",
-    a: "Yes. When a file is processed, fan emails and phone numbers are converted into one-way cryptographic tokens before anything is stored, and names are discarded by default. Raw files are deleted after processing. Each venue's data is isolated so no other client can access it.",
+    q: "Who certifies the findings?",
+    a: `${founderDisplayName()}, formerly of ${site.founder.formerEmployers.join(" and ")}. AI drafts findings from your data, and a CPA reviews each one against how your rooms actually run before it is certified.`,
   },
   {
-    q: "What does 'human-certified' mean?",
-    a: "Software does the heavy lifting on data cleanup and analysis, but no finding reaches you until a person has checked the numbers, tested the reasoning against how your venue actually runs, and signed off on it. You get recommendations, not raw dashboards.",
+    q: "What data do you need?",
+    a: "Standard exports you already have: settlements from your booking software, POS sales with timestamps, payroll or scheduling for bar, floor and security staff, and your general ledger. For the free snapshot, 90 days of settlements and bar sales for one room is enough.",
   },
   {
-    q: "How fast will we see results?",
-    a: "Your baseline per cap, cost-per-head and settlement review is usually delivered within the first 30 days after your data is uploaded. Many revenue and labor recommendations can be tested on the next weekend's shows.",
+    q: "Do we have to change our booking or POS software?",
+    a: "No. We work from exports of the tools you already use and join them by show. Your booking software stays the source of truth for deals and settlements.",
   },
   {
-    q: "What size venues do you work with?",
-    a: "Independent rooms, clubs, theaters and small amphitheaters that run a regular calendar of ticketed shows and have a bar or F&B operation. The work pays for itself fastest at venues with enough shows per year to make small per-head gains add up.",
+    q: "How do you handle fan data?",
+    a: "Fan names, emails and phone numbers are stripped when a file arrives, so we never store them. The rest of each file is kept encrypted so every number can be traced to its source row.",
+  },
+  {
+    q: "Do you share our numbers with other clients?",
+    a: "Never individually. If you opt in, your data can contribute to anonymized benchmarks that are published only when at least five venues contribute to a figure, and you see how you compare.",
   },
 ];

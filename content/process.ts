@@ -1,31 +1,40 @@
+import { site } from "@/lib/site";
+
+/** How an engagement runs, from the free snapshot to monthly CFO work. */
 export const steps = [
   {
-    title: "Upload",
-    summary: "Export reports from your ticketing, POS and accounting systems and upload them through the encrypted client portal.",
+    title: "Snapshot",
+    summary: `Send about 90 days of settlements and bar sales for one room. Within ${site.snapshotTurnaround} you see your most and least profitable shows. Free.`,
     detail: [
-      "We send a checklist of exactly which reports to pull from each system: ticketing order exports, POS item and hourly sales, show settlements, P&L or general ledger, and recent tax filings.",
-      "Files go straight to private, encrypted storage. Fan emails and phone numbers are tokenized during processing, and raw files are deleted afterwards.",
+      "The snapshot shows the method on your own numbers: contribution by show after the artist settlement and bar, plus bar per cap by night and genre for that room.",
     ],
   },
   {
-    title: "Analyze",
-    summary: "Your data is cleaned, matched across systems and measured per attendee, show by show.",
+    title: "Collect",
+    summary: "For an audit, export 12 months of settlements, POS sales, payroll or scheduling, and your general ledger. No integrations required.",
     detail: [
-      "Software standardizes formats from different platforms, matches ticket buyers to bar and merch spend using privacy-safe tokens, and builds per cap, cost-per-head and margin views by show, genre, night and promoter.",
+      "We send a checklist of the exact reports to pull from your booking, POS, payroll and accounting systems. Files are encrypted on arrival, and fan names, emails and phone numbers are stripped at intake.",
+    ],
+  },
+  {
+    title: "Rebuild",
+    summary: "Every show is rebuilt: settlement, bar, merch, facility fees, labor and security joined to the night they belong to.",
+    detail: [
+      "POS sales are matched to each show's doors-to-close window. Shifts and security are allocated by the hours they worked each show, using rules you approve. Every figure traces back to the row it came from.",
     ],
   },
   {
     title: "Certify",
-    summary: "A person reviews every finding against how your venue really runs, then signs off.",
+    summary: "A CPA reviews every finding against how your rooms actually run, then signs off. Nothing reaches you unchecked.",
     detail: [
-      "Nothing is sent to you automatically. Every finding is checked for data quality, tested against your operating reality, and either certified, revised or discarded. Tax-related items are prepared for your CPA to confirm.",
+      "AI drafts findings from the show-level data. Each one is checked for data quality and tested against your operating reality before it is certified, revised or discarded.",
     ],
   },
   {
-    title: "Act",
-    summary: "You get a short list of prioritized, dollar-sized recommendations and a monthly KPI pack.",
+    title: "Decide",
+    summary: "You get the shows that lose money, why, and what to change. With Fractional CFO, the same view updates every month.",
     detail: [
-      "Each recommendation states the expected impact, the effort, who owns it and how we'll measure it. We review results monthly and reassess the plan, and the engagement, against the metrics agreed at kickoff.",
+      "Recommendations cover booking offers, pricing, staffing and which nights to sell as private rentals, each with a dollar estimate and an owner. Fractional CFO clients also get a 13-week cash forecast and lender reporting.",
     ],
   },
 ] as const;

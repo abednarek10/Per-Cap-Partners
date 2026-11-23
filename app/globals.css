@@ -70,6 +70,11 @@
   }
   p { text-wrap: pretty; }
   a { text-underline-offset: 3px; }
+  /* Links inside running text must not rely on color alone (WCAG 1.4.1). */
+  main p a, main li a:not([class*="block"]):not([class*="rounded"]) {
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  }
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;

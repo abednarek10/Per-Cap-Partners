@@ -8,16 +8,16 @@ import type { Faq } from "@/content/services";
 export const metadata: Metadata = pageMetadata({
   title: "Security and Data Handling for Venue and Fan Data",
   description:
-    "How Per Cap Partners protects venue financials and fan data: PII tokenization at ingestion, encryption, per-venue isolation, MFA and raw-file deletion.",
+    "How Per Cap Partners protects venue group financials and fan data: PII stripped at intake, traceable encrypted source files, isolation and multi-factor sign-in.",
   path: "/security",
 });
 
 const controls = [
-  { t: "Fan PII is tokenized at ingestion", b: "When a ticketing or POS file is processed, email addresses and phone numbers are normalized and converted into one-way keyed hashes (HMAC-SHA-256) in memory. Only the token is stored. Names are discarded by default. We can recognise a returning fan across shows and systems without holding their contact details." },
-  { t: "Raw files are deleted after processing", b: "Uploaded exports are kept only as long as it takes to validate and process them, then deleted. Financial and tax documents that need human review are stored encrypted with access limited to the assigned advisor." },
+  { t: "Fan personal data is stripped at intake", b: "When a file arrives, fan names are removed, and emails and phone numbers are replaced with one-way keyed tokens (HMAC-SHA-256) before anything is stored. We can count returning fans without ever holding their contact details." },
+  { t: "Every number is traceable", b: "The PII-stripped version of each source file is kept encrypted, so every figure in a deliverable traces back to the file and row it came from, the same standard a CPA applies to work papers." },
   { t: "Encryption in transit and at rest", b: "All traffic uses TLS. Databases and file storage are encrypted at rest. Upload links are short-lived and signed, and files never pass through public storage." },
-  { t: "Each venue's data is isolated", b: "Row-level security in the database means every query is scoped to your organization. Another client cannot see your data, even by accident." },
-  { t: "Strong sign-in", b: "Portal access requires multi-factor authentication. Roles separate venue staff, venue admins and the advisor, and every access to sensitive data is written to an audit log." },
+  { t: "Each group's data is isolated", b: "Row-level security in the database means every query is scoped to your organization. Another client cannot see your data, even by accident." },
+  { t: "Strong sign-in", b: "Workspace access requires multi-factor authentication. Roles separate your team members, your admins and our advisors, and every access to sensitive data is written to an audit log." },
   { t: "Validated uploads", b: "Files are checked for type, size and content signature before processing. Only CSV, Excel and PDF are accepted." },
 ];
 
@@ -35,7 +35,8 @@ export default function SecurityPage() {
         crumbs={[{ name: "Home", path: "/" }, { name: "Security", path: "/security" }]}
         eyebrow="Security & data"
         title="Your numbers and your fans, protected by design"
-        answer={`${site.name} protects venue data in five ways. Fan emails and phone numbers are converted to one-way tokens before anything is stored. Raw uploads are deleted after processing. Data is encrypted in transit and at rest. Each venue's records are isolated with row-level security. Portal access requires multi-factor sign-in.`}
+        answer={`${site.name} protects venue group data in five ways. Fan names, emails and phone numbers are stripped when files arrive. PII-stripped source files are kept encrypted so every number is traceable. Data is encrypted in transit and at rest. Each group's records are isolated with row-level security. Workspace access requires multi-factor sign-in.`}
+        whoFor={site.audience}
       />
       <Section>
         <div className="grid gap-5 md:grid-cols-2">

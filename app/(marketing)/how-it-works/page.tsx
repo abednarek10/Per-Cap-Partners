@@ -6,16 +6,16 @@ import { graph } from "@/lib/seo/jsonld";
 import { Section, JsonLd, PageHero, CtaBand } from "@/components/ui";
 
 export const metadata: Metadata = pageMetadata({
-  title: "How It Works: From Venue Data to Certified Recommendations",
+  title: "How It Works: From Venue Exports to Show-Level Decisions",
   description:
-    "How Per Cap Partners works: upload ticketing, POS and financial exports, we analyze per attendee, a person certifies every finding, and you act on a prioritized plan.",
+    "How Per Cap works for venue groups: a free snapshot, then settlements, POS and payroll joined show by show, every finding certified by a CPA, and monthly decisions.",
   path: "/how-it-works",
 });
 
 const howTo = {
   "@type": "HowTo",
-  name: `How a ${site.name} engagement works`,
-  description: "The four-step process from raw venue data to human-certified financial recommendations.",
+  name: `How ${site.productName} works`,
+  description: "The five steps from a free snapshot to CPA-certified, show-level decisions for a venue group.",
   url: absoluteUrl("/how-it-works"),
   step: steps.map((s, i) => ({ "@type": "HowToStep", position: i + 1, name: s.title, text: s.summary })),
 };
@@ -27,8 +27,9 @@ export default function HowItWorksPage() {
       <PageHero
         crumbs={[{ name: "Home", path: "/" }, { name: "How it works", path: "/how-it-works" }]}
         eyebrow="How it works"
-        title="Upload. Analyze. Certify. Act."
-        answer={`Working with ${site.name} takes four steps. You upload standard exports from your ticketing, POS and accounting systems. We clean and join the data and measure everything per attendee. A person reviews and certifies every finding. Then you receive a short, prioritized list of dollar-sized recommendations plus monthly CFO reporting.`}
+        title="Snapshot. Collect. Rebuild. Certify. Decide."
+        answer={`Working with ${site.name} takes five steps. Start with a free snapshot for one room. For an audit, export 12 months from your booking, POS, payroll and accounting systems. We rebuild every show's P&L, a CPA certifies each finding, and you decide what to book, price and staff, monthly if you choose Fractional CFO.`}
+        whoFor={site.audience}
       />
       <Section>
         <ol className="space-y-6">
@@ -45,12 +46,12 @@ export default function HowItWorksPage() {
         </ol>
       </Section>
       <Section className="border-t border-line" aria-labelledby="timeline">
-        <h2 id="timeline" className="text-3xl font-bold sm:text-4xl">The first 90 days</h2>
+        <h2 id="timeline" className="text-3xl font-bold sm:text-4xl">A typical audit timeline</h2>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {[
-            { t: "Days 1–30", b: "Data upload, cleanup and baseline: per cap, cost per head, settlement review and fan segments." },
-            { t: "Days 31–60", b: "First certified recommendations, quick wins tested on live shows, and the KPI pack goes monthly." },
-            { t: "Days 61–90", b: "Tax-efficiency memo to your CPA, calendar and pricing plan for next season, and a 13-week cash forecast." },
+            { t: "Weeks 1–2", b: "Exports collected and checked. Allocation rules for labor, security and overhead agreed with you." },
+            { t: "Weeks 3–4", b: "Every show rebuilt across every room. Draft findings reviewed against how your rooms actually run." },
+            { t: "Weeks 5–6", b: "Certified findings presented: the shows that lose money, why, and ranked changes to booking, pricing and staffing." },
           ].map((c) => (
             <div key={c.t} className="rounded-2xl border border-line bg-surface p-6">
               <h3 className="text-xl font-bold text-accent-ink">{c.t}</h3>

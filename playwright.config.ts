@@ -17,7 +17,7 @@ export default defineConfig({
         url: `http://localhost:${PORT}`,
         reuseExistingServer: !process.env.CI,
         // File fallback lets the form test run against a production build without a database.
-        env: { LEADS_FILE_FALLBACK: "1", LEAD_IP_SALT: "test-salt" },
+        env: { LEADS_FILE_FALLBACK: "1", LEAD_IP_SALT: "test-salt", DATABASE_URL: "" },
         timeout: 60_000,
       },
 });

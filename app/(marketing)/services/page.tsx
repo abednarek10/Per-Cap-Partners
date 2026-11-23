@@ -20,11 +20,12 @@ export default function ServicesPage() {
       <PageHero
         crumbs={[{ name: "Home", path: "/" }, { name: "Services", path: "/services" }]}
         eyebrow="Services"
-        title="One finance partner for every number in the building"
-        answer={`${site.name} provides fractional CFO services built for independent music venues in four areas: revenue optimization (per cap, ticket pricing, fees), cost reduction (labor, pour cost, settlements), tax efficiency (prepared for your CPA), and go-to-market and operating strategy driven by your own fan data. All four come in a single engagement.`}
+        title="Show-level profitability, from one audit to an ongoing CFO"
+        answer={`${site.name} offers three services for independent venue groups. The Show Profitability Audit rebuilds 12 months show by show and finds the shows that lose money. Fractional CFO keeps that view current monthly, with cash forecasting, offer guardrails and lender reporting. Transaction support covers acquisitions, sales and refinancing.`}
+        whoFor={site.audience}
       />
       <Section>
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid gap-5 lg:grid-cols-3">
           {services.map((s) => (
             <Link key={s.slug} href={`/services/${s.slug}`} className="group rounded-2xl border border-line bg-surface p-7 hover:border-accent">
               <h2 className="text-2xl font-bold">{s.name}</h2>

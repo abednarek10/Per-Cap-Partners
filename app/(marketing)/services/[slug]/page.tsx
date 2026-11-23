@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { services, getService } from "@/content/services";
+import { getOffer, priceLabel } from "@/content/offers";
+import { site, primaryCta } from "@/lib/site";
 import { glossary } from "@/content/glossary";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { graph, faqPage, service as serviceLd } from "@/lib/seo/jsonld";
@@ -34,6 +36,8 @@ export default async function ServicePage({ params }: Props) {
         eyebrow={s.name}
         title={s.h1}
         answer={s.answer}
+        whoFor={s.whoFor}
+        meta={site.showPricing ? <span className="font-semibold text-accent-ink">{priceLabel(getOffer(s.offerId).price)} · {getOffer(s.offerId).timeline}</span> : undefined}
       />
 
       <Section aria-labelledby="problems">
@@ -109,8 +113,14 @@ export default async function ServicePage({ params }: Props) {
       </Section>
 
       <Section className="border-t border-line" aria-labelledby="related">
-        <h2 id="related" className="text-2xl font-bold">Related services</h2>
-        <ul className="mt-6 grid gap-4 sm:grid-cols-3">
+        <h2 id="related" className="text-2xl font-bold">Learn more</h2>
+        <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+          {s.related.map((r) => (
+            <li key={r.href}><Link href={r.href} className="text-accent-ink hover:underline">{r.label} →</Link></li>
+          ))}
+        </ul>
+        <h3 className="mt-10 text-lg font-bold">Other services</h3>
+        <ul className="mt-4 grid gap-4 sm:grid-cols-3">
           {others.map((o) => (
             <li key={o.slug}>
               <Link href={`/services/${o.slug}`} className="block rounded-2xl border border-line bg-surface p-5 hover:border-accent">
@@ -118,6 +128,11 @@ export default async function ServicePage({ params }: Props) {
               </Link>
             </li>
           ))}
+          <li>
+            <Link href={primaryCta.href} className="block rounded-2xl border border-accent/60 bg-surface p-5 hover:border-accent">
+              <span className="font-semibold">Free show profitability snapshot</span>
+            </Link>
+          </li>
         </ul>
       </Section>
 

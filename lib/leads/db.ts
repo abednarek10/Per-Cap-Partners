@@ -1,12 +1,18 @@
 import "server-only";
-import postgres from "postgres";
-import { drizzle } from "drizzle-orm/postgres-js";
-import { leads } from "@/db/schema";
+import { Pool } from "pg";
 import type { LeadInput } from "./schema";
 
-const client = postgres(process.env.DATABASE_URL!, { max: 1, prepare: false, ssl: "require" });
-const db = drizzle(client);
+// The app role (percap_app) is subject to row-level security; leads allow insert only.
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  max: 3,
+  ssl: process.env.DATABASE_SSL === "disable" ? false : process.env.NODE_ENV === "production" ? { rejectUnauthorized: true } : false,
+});
 
 export async function insertLead(lead: Omit<LeadInput, "website">, ipHash: string | null) {
-  await db.insert(leads).values({ ...lead, ipHash });
+  await pool.query(
+    `insert into leads (name, email, role, company, city, rooms, interest, systems, message, ip_hash)
+     values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+    [lead.name, lead.email, lead.role, lead.company, lead.city, lead.rooms, lead.interest, lead.systems, lead.message, ipHash],
+  );
 }

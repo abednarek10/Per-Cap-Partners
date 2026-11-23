@@ -1,3 +1,3 @@
 // Kept separate from the Zod schema so the client form doesn't bundle Zod.
-export const venueCapacityOptions = ["Under 300", "300–750", "750–1,500", "1,500–3,000", "3,000+"] as const;
-export const showsPerYearOptions = ["Under 75", "75–150", "150–250", "250+"] as const;
+export const roomCountOptions = ["1 room", "2 rooms", "3–5 rooms", "6–10 rooms", "More than 10 rooms"] as const;
+export const interestOptions = ["Free snapshot", "Show Profitability Audit", "Fractional CFO", "Transaction support"] as const;

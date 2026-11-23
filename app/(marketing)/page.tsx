@@ -1,146 +1,101 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { site, formatUsd, monthlyPrice } from "@/lib/site";
+import { site, primaryCta, founderDisplayName } from "@/lib/site";
 import { services } from "@/content/services";
 import { generalFaqs } from "@/content/faq";
+import { steps } from "@/content/process";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { graph, faqPage, service as serviceLd } from "@/lib/seo/jsonld";
 import { Container, Section, Eyebrow, ButtonLink, FaqList, JsonLd, CtaBand } from "@/components/ui";
-import { steps } from "@/content/process";
+import { ShowPnlSample, ThreeSystems } from "@/components/marketing/show-pnl";
+import { OfferLadder } from "@/components/marketing/offer-ladder";
 
 export const metadata: Metadata = pageMetadata({
-  title: `Fractional CFO for Music Venues | ${site.name}`,
+  title: `Show-Level Profitability for Venue Groups | ${site.name}`,
   description:
-    "Fractional CFO for independent music venues. Raise per cap, cut costs and improve tax efficiency with human-certified recommendations. Start with a free revenue audit.",
+    "See which shows make money once the bar, labor and security are counted. CPA-certified show profitability, cash forecasting and fractional CFO services for venue groups.",
   path: "/",
 });
 
-const homeFaqs = generalFaqs.slice(0, 5);
-
-const illustrative = { attendees: 400, shows: 150, lift: 2 };
-const illustrativeTotal = illustrative.attendees * illustrative.shows * illustrative.lift;
+const homeFaqs = generalFaqs.slice(0, 6);
 
 export default function HomePage() {
   return (
     <>
       <JsonLd data={graph(...services.map(serviceLd), faqPage(homeFaqs))} />
 
-      {/* Hero */}
+      {/* Hero: the problem and the offer */}
       <div className="spotlight border-b border-line">
-        <Container className="pb-20 pt-16 sm:pb-28 sm:pt-24">
-          <Eyebrow>Fractional CFO for independent music venues</Eyebrow>
+        <Container className="pb-16 pt-14 sm:pb-24 sm:pt-20">
+          <Eyebrow>Show-level profitability for independent venue groups</Eyebrow>
           <h1 className="mt-5 max-w-4xl text-5xl font-bold sm:text-7xl">
-            <span className="text-accent-ink">You book the talent.</span> We run the numbers.
+            Know which shows <span className="text-accent-ink">actually make money.</span>
           </h1>
-          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl" data-answer>
-            {site.name} is a fractional CFO for independent music venues. We turn your ticketing, bar and financial
-            data into human-certified recommendations that raise revenue per head, cut costs and improve tax
-            efficiency, so owners and GMs can get back to booking and servicing talent.
+          <p className="mt-7 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl" data-answer>
+            The ticket brings people in. The bar and the building make the money. {site.name} joins your settlements, bar sales and
+            labor show by show, so venue groups running 2 to 10 rooms can see which shows earn, which lose, and what to book next.
+            Every finding is certified by a CPA.
           </p>
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="/contact">Get your free revenue audit</ButtonLink>
-            <ButtonLink href="/how-it-works" variant="ghost">See how it works</ButtonLink>
+          <p className="mt-4 text-sm text-muted" data-who>
+            <span className="font-semibold text-ink">Who this is for: </span>{site.audience}.
+          </p>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <ButtonLink href={primaryCta.href}>{primaryCta.label}</ButtonLink>
+            <ButtonLink href="/show-profitability" variant="ghost">See the method</ButtonLink>
           </div>
-          <ul className="mt-12 grid max-w-3xl grid-cols-2 gap-x-6 gap-y-4 text-sm text-muted sm:grid-cols-4">
-            {[
-              "Human-certified findings",
-              "Dedicated advisor",
-              "Free revenue audit",
-              site.showPricing ? `From ${monthlyPrice()}` : "Fan PII tokenized",
-            ].map((t) => (
-              <li key={t} className="flex items-center gap-2">
-                <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent" />
-                {t}
-              </li>
-            ))}
-          </ul>
+          <p className="mt-8 text-sm text-muted">You book the talent. We run the numbers.</p>
         </Container>
       </div>
 
-      {/* Problem */}
-      <Section aria-labelledby="problem-heading">
+      {/* The problem: three systems */}
+      <Section aria-labelledby="systems-heading">
         <div className="max-w-3xl">
           <Eyebrow>The problem</Eyebrow>
-          <h2 id="problem-heading" className="mt-3 text-3xl font-bold sm:text-5xl">
-            Independent venues run on thin margins and late numbers
-          </h2>
+          <h2 id="systems-heading" className="mt-3 text-3xl font-bold sm:text-5xl">Your show P&amp;L is split across three systems</h2>
           <p className="mt-5 text-lg text-muted">
-            Arena operators have finance teams. Most independent rooms have a bookkeeper, a POS report and a gut feeling.
-            The data to run a tighter business is already sitting in your ticketing and bar systems. Nobody has the time to join it up.
+            The settlement is in your booking software, bar sales are in the register, and labor and security are in scheduling and
+            payroll. Almost nobody joins them per show, so the basic questions go unanswered. Joining financial data and allocating
+            costs is accounting work, which is exactly what a CPA is trained for.
           </p>
         </div>
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
-          {[
-            { t: "You see totals, not per head", b: "Bar sales were up. But was that more fans, or each fan spending more? Without per cap by show type, you can't tell." },
-            { t: "Settlements leak quietly", b: "House costs that never get recovered, deal terms that drift between promoters, fees nobody reconciles." },
-            { t: "Ownership sees it too late", b: "A quarterly P&L can't fix last month's labor schedule or this month's cash crunch." },
-          ].map((c) => (
-            <div key={c.t} className="rounded-2xl border border-line bg-surface p-6">
-              <h3 className="text-xl font-bold">{c.t}</h3>
-              <p className="mt-3 text-muted">{c.b}</p>
-            </div>
-          ))}
-        </div>
+        <div className="mt-10"><ThreeSystems /></div>
       </Section>
 
-      {/* Services */}
-      <Section className="border-t border-line" aria-labelledby="services-heading">
+      {/* What it looks like */}
+      <Section className="border-t border-line" aria-labelledby="sample-heading">
         <div className="max-w-3xl">
-          <Eyebrow>What we do</Eyebrow>
-          <h2 id="services-heading" className="mt-3 text-3xl font-bold sm:text-5xl">Four levers, one finance partner</h2>
+          <Eyebrow>What you get</Eyebrow>
+          <h2 id="sample-heading" className="mt-3 text-3xl font-bold sm:text-5xl">A P&amp;L for every show, in every room</h2>
+          <p className="mt-5 text-lg text-muted">
+            Ranked by contribution, after the artist settlement, bar, labor, security and production. The shows that lose money stand out
+            immediately, and so do the ones quietly carrying the week.
+          </p>
         </div>
-        <div className="mt-12 grid gap-5 sm:grid-cols-2">
-          {services.map((s, i) => (
-            <Link
-              key={s.slug}
-              href={`/services/${s.slug}`}
-              className="group rounded-2xl border border-line bg-surface p-7 transition-colors hover:border-accent"
-            >
-              <p className="font-display text-sm font-bold text-accent-ink">0{i + 1}</p>
-              <h3 className="mt-2 text-2xl font-bold">{s.h1}</h3>
-              <p className="mt-3 text-muted">{s.description}</p>
-              <p className="mt-5 text-sm font-semibold text-accent-ink">
-                {s.navLabel} <span aria-hidden className="inline-block transition-transform group-hover:translate-x-1">→</span>
-              </p>
-            </Link>
-          ))}
-        </div>
+        <div className="mt-10"><ShowPnlSample /></div>
+        <p className="mt-6 text-muted">
+          Learn the method: <Link href="/playbook/how-to-calculate-show-level-profitability" className="text-accent-ink hover:underline">how to calculate show-level profitability</Link>{" "}
+          and <Link href="/playbook/how-to-set-artist-offers-using-per-cap" className="text-accent-ink hover:underline">how to set artist offers from per cap</Link>.
+        </p>
       </Section>
 
-      {/* Illustrative math */}
-      <Section className="border-t border-line" aria-labelledby="math-heading">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div>
-            <Eyebrow>Why per cap matters</Eyebrow>
-            <h2 id="math-heading" className="mt-3 text-3xl font-bold sm:text-5xl">Two dollars a head is a full-time salary</h2>
-            <p className="mt-5 text-lg text-muted">
-              Small per-head gains compound across a full calendar. That's why we measure everything per attendee, and
-              why the engagement is built to pay for itself many times over.
-            </p>
-          </div>
-          <figure className="rounded-2xl border border-line bg-surface p-7">
-            <figcaption className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Illustrative example</figcaption>
-            <dl className="mt-6 space-y-4 text-lg">
-              <Row k="Average scanned attendance" v={illustrative.attendees.toLocaleString("en-US")} />
-              <Row k="Ticketed shows per year" v={illustrative.shows.toLocaleString("en-US")} />
-              <Row k="Per cap increase" v={formatUsd(illustrative.lift)} />
-              <div className="flex items-baseline justify-between gap-4 border-t border-line pt-4">
-                <dt className="font-semibold">Added annual revenue</dt>
-                <dd className="font-display text-4xl font-bold text-accent-ink">{formatUsd(illustrativeTotal)}</dd>
-              </div>
-            </dl>
-            <p className="mt-5 text-xs text-muted">Hypothetical figures for illustration only. Your results depend on your venue, market and calendar.</p>
-          </figure>
+      {/* Offer ladder */}
+      <Section className="border-t border-line" aria-labelledby="offers-heading">
+        <div className="max-w-3xl">
+          <Eyebrow>How to work with us</Eyebrow>
+          <h2 id="offers-heading" className="mt-3 text-3xl font-bold sm:text-5xl">Start free. Go as deep as you need.</h2>
         </div>
+        <div className="mt-10"><OfferLadder /></div>
+        <p className="mt-6"><Link href="/pricing" className="font-semibold text-accent-ink hover:underline">Compare offers and pricing →</Link></p>
       </Section>
 
       {/* How it works */}
       <Section className="border-t border-line" aria-labelledby="how-heading">
         <div className="max-w-3xl">
           <Eyebrow>How it works</Eyebrow>
-          <h2 id="how-heading" className="mt-3 text-3xl font-bold sm:text-5xl">From raw exports to certified decisions</h2>
+          <h2 id="how-heading" className="mt-3 text-3xl font-bold sm:text-5xl">From exports to decisions</h2>
+          <p className="mt-5 text-lg text-muted">No integrations and no new software for your team. If your systems can export a report, we can use it.</p>
         </div>
-        <ol className="mt-12 grid gap-5 md:grid-cols-4">
+        <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {steps.map((s, i) => (
             <li key={s.title} className="rounded-2xl border border-line bg-surface p-6">
               <p className="font-display text-3xl font-bold text-accent-ink">{i + 1}</p>
@@ -149,57 +104,52 @@ export default function HomePage() {
             </li>
           ))}
         </ol>
-        <p className="mt-8"><Link href="/how-it-works" className="font-semibold text-accent-ink hover:underline">Read the full process →</Link></p>
       </Section>
 
-      {/* Human-certified + dedicated advisor */}
-      <Section className="border-t border-line" aria-labelledby="certified-heading">
-        <div className="grid gap-12 lg:grid-cols-2">
+      {/* Credibility */}
+      <Section className="border-t border-line" aria-labelledby="cred-heading">
+        <div className="grid items-center gap-10 rounded-3xl border border-line bg-surface p-8 sm:p-12 lg:grid-cols-[auto_1fr]">
+          <div aria-hidden className="grid h-28 w-28 place-items-center rounded-full bg-accent font-display text-4xl font-bold text-on-accent">
+            {site.founder.name.split(" ").map((n) => n[0]).join("")}
+          </div>
           <div>
-            <Eyebrow>Human-certified</Eyebrow>
-            <h2 id="certified-heading" className="mt-3 text-3xl font-bold sm:text-5xl">Software finds it. A person signs off on it.</h2>
-            <p className="mt-5 text-lg text-muted">
-              Automated analysis does the heavy lifting on cleanup and pattern-finding. Before anything reaches you, a
-              person checks the numbers, tests the reasoning against how your room actually runs, and certifies it.
-              You get decisions you can act on, not another dashboard.
+            <Eyebrow>Who certifies your numbers</Eyebrow>
+            <h2 id="cred-heading" className="mt-3 text-3xl font-bold sm:text-4xl">{founderDisplayName()}</h2>
+            <p className="mt-2 font-semibold text-accent-ink">Founder · Formerly {site.founder.formerEmployers.join(" and ")}</p>
+            <p className="mt-4 max-w-3xl text-lg text-muted">
+              Show profitability is an accounting problem: joining financial data from different systems and allocating costs fairly.
+              AI does the volume work. A CPA checks the numbers and the reasoning and signs off on every finding, the standard
+              ownership, lenders and insurers expect.
             </p>
-          </div>
-          <div className="rounded-2xl border border-accent/40 bg-surface p-8">
-            <h3 className="text-2xl font-bold">A CFO who knows your room</h3>
-            <p className="mt-3 text-muted">
-              You work directly with the advisor who reviews and signs off on your numbers, someone who knows your calendar,
-              your team and how your room runs on a sold-out Saturday.
-              {site.showPricing &&
-                ` It starts with a free revenue audit. Plans start at ${monthlyPrice()}, and pricing is reassessed each year against the performance metrics we agree on together.`}
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <ButtonLink href="/contact">Get your free revenue audit</ButtonLink>
-              <ButtonLink href="/pricing" variant="ghost">How pricing works</ButtonLink>
-            </div>
+            <Link href="/team" className="mt-5 inline-block font-semibold text-accent-ink hover:underline">Meet the team →</Link>
           </div>
         </div>
       </Section>
 
-      {/* Security */}
-      <Section className="border-t border-line" aria-labelledby="security-heading">
-        <div className="max-w-3xl">
-          <Eyebrow>Your data</Eyebrow>
-          <h2 id="security-heading" className="mt-3 text-3xl font-bold sm:text-5xl">Built for data you can't afford to leak</h2>
+      {/* Security + playbook */}
+      <Section className="border-t border-line" aria-labelledby="trust-heading">
+        <h2 id="trust-heading" className="sr-only">Data security and resources</h2>
+        <div className="grid gap-5 lg:grid-cols-2">
+          <div className="rounded-2xl border border-line bg-surface p-8">
+            <Eyebrow>Your data</Eyebrow>
+            <h3 className="mt-3 text-3xl font-bold">Built for numbers you can&apos;t afford to leak</h3>
+            <ul className="mt-5 grid gap-3 text-muted sm:grid-cols-2">
+              {["Fan names, emails and phones stripped at intake", "Encrypted in transit and at rest", "Each group's data isolated", "Every number traceable to its source"].map((t) => (
+                <li key={t} className="flex gap-2"><span aria-hidden className="text-accent-ink">✓</span>{t}</li>
+              ))}
+            </ul>
+            <Link href="/security" className="mt-6 inline-block font-semibold text-accent-ink hover:underline">How we protect your data →</Link>
+          </div>
+          <div className="rounded-2xl border border-line bg-surface p-8">
+            <Eyebrow>Operator playbook</Eyebrow>
+            <h3 className="mt-3 text-3xl font-bold">Best practices for running venue groups</h3>
+            <p className="mt-4 text-muted">
+              Settlements, artist offers, labor allocation, cash forecasting around deposits and lender covenants. Each entry has a
+              formula, a worked example and the common mistakes.
+            </p>
+            <Link href="/playbook" className="mt-6 inline-block font-semibold text-accent-ink hover:underline">Browse the playbook →</Link>
+          </div>
         </div>
-        <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            { t: "Fan PII tokenized", b: "Emails and phones become one-way tokens before storage. Names are dropped." },
-            { t: "Encrypted everywhere", b: "TLS in transit, encryption at rest, private storage only." },
-            { t: "Isolated per venue", b: "Row-level security means no client can see another's data." },
-            { t: "Raw files deleted", b: "Uploaded exports are removed after processing." },
-          ].map((c) => (
-            <li key={c.t} className="rounded-2xl border border-line bg-surface p-6">
-              <h3 className="text-lg font-bold">{c.t}</h3>
-              <p className="mt-2 text-sm text-muted">{c.b}</p>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-8"><Link href="/security" className="font-semibold text-accent-ink hover:underline">How we handle your data →</Link></p>
       </Section>
 
       {/* FAQ */}
@@ -216,14 +166,5 @@ export default function HomePage() {
 
       <CtaBand />
     </>
-  );
-}
-
-function Row({ k, v }: { k: string; v: string }) {
-  return (
-    <div className="flex items-baseline justify-between gap-4">
-      <dt className="text-muted">{k}</dt>
-      <dd className="font-semibold">{v}</dd>
-    </div>
   );
 }

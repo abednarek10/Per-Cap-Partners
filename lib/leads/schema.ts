@@ -1,7 +1,6 @@
 import { z } from "zod";
-
-import { venueCapacityOptions, showsPerYearOptions } from "./options";
-export { venueCapacityOptions, showsPerYearOptions };
+import { roomCountOptions, interestOptions } from "./options";
+export { roomCountOptions, interestOptions };
 
 const trimmed = (max: number) => z.string().trim().max(max);
 
@@ -9,16 +8,18 @@ export const leadSchema = z.object({
   name: trimmed(120).min(2, "Please enter your name."),
   email: z.string().trim().toLowerCase().max(254).pipe(z.email("Please enter a valid email address.")),
   role: trimmed(80).min(2, "Please tell us your role."),
-  venueName: trimmed(160).min(2, "Please enter your venue's name."),
+  company: trimmed(160).min(2, "Please enter your venue group's name."),
   city: trimmed(120).min(2, "Please enter your city."),
-  capacity: z.enum(venueCapacityOptions, { error: "Please choose a capacity range." }),
-  showsPerYear: z.enum(showsPerYearOptions, { error: "Please choose how many shows you run." }),
+  rooms: z.enum(roomCountOptions, { error: "Please choose how many rooms you run." }),
+  interest: z.enum(interestOptions, { error: "Please choose what you're interested in." }),
+  systems: trimmed(300).optional().default(""),
   message: trimmed(2000).optional().default(""),
   // Honeypot: real users never see or fill this field.
   website: z.string().max(0, "Spam detected.").optional().default(""),
 });
 
 export type LeadInput = z.infer<typeof leadSchema>;
+export const leadFields = ["name", "email", "role", "company", "city", "rooms", "interest", "systems", "message"] as const;
 
 export type LeadFormState =
   | { status: "idle" }
@@ -32,10 +33,10 @@ export type LeadFormState =
 
 export function parseLead(formData: FormData) {
   const raw = Object.fromEntries(
-    ["name", "email", "role", "venueName", "city", "capacity", "showsPerYear", "message", "website"].map((k) => [
-      k,
-      typeof formData.get(k) === "string" ? (formData.get(k) as string) : undefined,
-    ]),
+    [...leadFields, "website"].map((k) => {
+      const v = formData.get(k);
+      return [k, typeof v === "string" ? v : undefined];
+    }),
   );
   return leadSchema.safeParse(raw);
 }

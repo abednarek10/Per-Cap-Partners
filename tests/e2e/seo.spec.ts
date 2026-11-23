@@ -1,6 +1,9 @@
 import { test, expect } from "@playwright/test";
 import { publicRoutes } from "@/lib/routes";
 import { absoluteUrl } from "@/lib/site";
+import { playbook } from "@/content/playbook";
+
+const draftSlugs = playbook.filter((e) => !e.certified).map((e) => e.slug);
 
 const routes = publicRoutes();
 
@@ -101,17 +104,48 @@ test("no public surface reveals internal engagement details", async ({ page, req
   for (const p of ["/llms.txt", "/llms-full.txt"]) expect(await (await request.get(p)).text(), p).not.toMatch(leak);
 });
 
-test("home security cards keep their own titles", async ({ page }) => {
+test("the free snapshot is the primary offer", async ({ page }) => {
   await page.goto("/");
-  const security = page.locator('section[aria-labelledby="security-heading"]');
-  for (const t of ["Fan PII tokenized", "Encrypted everywhere", "Isolated per venue", "Raw files deleted"]) {
-    await expect(security.getByRole("heading", { name: t })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Get a free show profitability snapshot" }).first()).toHaveAttribute("href", "/snapshot");
+  await page.goto("/pricing");
+  for (const t of ["Free", "Starting at $10,000", "Starting at $3,000/mo", "By request"]) {
+    await expect(page.locator("main").getByText(t, { exact: true }).first()).toBeVisible();
   }
 });
 
-test("free revenue audit is the primary offer", async ({ page }) => {
-  await page.goto("/");
-  await expect(page.getByRole("link", { name: "Get your free revenue audit" }).first()).toHaveAttribute("href", "/contact");
-  await page.goto("/pricing");
-  await expect(page.locator("h1")).toContainText("Free audit first");
+test("key pages lead with an answer and say who they're for", async ({ page }) => {
+  for (const path of ["/", "/show-profitability", "/snapshot", "/pricing", "/services/show-profitability-audit", "/services/fractional-cfo", "/compare/booking-software-and-per-cap", "/playbook", "/team"]) {
+    await page.goto(path);
+    await expect(page.locator("[data-answer]").first(), path).toBeVisible();
+    await expect(page.locator("[data-who]").first(), path).toBeVisible();
+  }
+});
+
+test("retired URLs redirect permanently to live pages", async ({ request }) => {
+  const map: Record<string, string> = {
+    "/about": "/team",
+    "/contact": "/snapshot",
+    "/services/revenue": "/show-profitability",
+    "/services/cost-reduction": "/show-profitability",
+    "/services/tax-efficiency": "/services/fractional-cfo",
+    "/services/gtm-strategy": "/services/fractional-cfo",
+  };
+  for (const [from, to] of Object.entries(map)) {
+    const res = await request.get(from, { maxRedirects: 0 });
+    expect(res.status(), from).toBe(308);
+    expect(res.headers()["location"], from).toBe(to);
+    expect((await request.get(to)).status(), to).toBe(200);
+  }
+});
+
+test("draft playbook entries are labeled, noindexed and disallowed", async ({ page, request }) => {
+  const robotsTxt = await (await request.get("/robots.txt")).text();
+  for (const slug of draftSlugs) {
+    await page.goto(`/playbook/${slug}`);
+    await expect(page.getByRole("note")).toContainText("pending CPA review");
+    const robots = await page.locator('meta[name="robots"]').evaluateAll((m) => m.map((x) => x.getAttribute("content")));
+    expect(robots.some((c) => c?.includes("noindex")), slug).toBe(true);
+    await expect(page.locator("[data-reviewed]")).toHaveCount(0);
+    expect(robotsTxt).toContain(`Disallow: /playbook/${slug}`);
+  }
 });

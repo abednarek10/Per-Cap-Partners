@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { primaryCta } from "@/lib/site";
 import type { ComponentProps, ReactNode } from "react";
 import { serializeJsonLd, breadcrumbs as breadcrumbLd, graph } from "@/lib/seo/jsonld";
 import type { Faq } from "@/content/services";
@@ -89,11 +90,15 @@ export function PageHero({
   eyebrow,
   title,
   answer,
+  whoFor,
+  meta,
 }: {
   crumbs: { name: string; path: string }[];
   eyebrow?: string;
   title: string;
   answer?: ReactNode;
+  whoFor?: string;
+  meta?: ReactNode;
 }) {
   return (
     <div className="spotlight border-b border-line">
@@ -101,23 +106,30 @@ export function PageHero({
         <Breadcrumbs items={crumbs} />
         {eyebrow && <div className="mt-10"><Eyebrow>{eyebrow}</Eyebrow></div>}
         <h1 className={`${eyebrow ? "mt-3" : "mt-10"} max-w-4xl text-4xl font-bold sm:text-6xl`}>{title}</h1>
+        {meta && <div className="mt-5 text-sm text-muted">{meta}</div>}
         {answer && <div className="max-w-3xl"><AnswerBox>{answer}</AnswerBox></div>}
+        {whoFor && (
+          <p className="mt-5 max-w-3xl text-sm text-muted" data-who>
+            <span className="font-semibold text-ink">Who this is for: </span>
+            {whoFor}
+          </p>
+        )}
       </Container>
     </div>
   );
 }
 
-export function CtaBand({ title = "See what your room is leaving on the table", body }: { title?: string; body?: string }) {
+export function CtaBand({ title = "See which of your shows really make money", body }: { title?: string; body?: string }) {
   return (
     <section className="border-t border-line bg-surface">
       <Container className="flex flex-col items-start gap-6 py-16 sm:flex-row sm:items-center sm:justify-between">
         <div className="max-w-2xl">
           <h2 className="text-3xl font-bold sm:text-4xl">{title}</h2>
           <p className="mt-3 text-muted">
-            {body ?? "Get a free Venue Revenue Audit. We'll review your last 12 months of shows and show you where per cap, costs and taxes can improve, before you commit to anything."}
+            {body ?? `Upload about 90 days of settlements and bar sales for one room. We'll show you your most and least profitable shows once the bar is counted. Free, certified by a CPA.`}
           </p>
         </div>
-        <ButtonLink href="/contact" className="shrink-0">Get your free revenue audit</ButtonLink>
+        <ButtonLink href={primaryCta.href} className="shrink-0">{primaryCta.label}</ButtonLink>
       </Container>
     </section>
   );
